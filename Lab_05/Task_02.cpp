@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// Node
+
 class Node {
 public:
     string image;
@@ -12,7 +12,7 @@ public:
     Node(const string& imageName) : image(imageName), prev(NULL), next(NULL) {}
 };
 
-// Image Gallery
+
 class ImageGallery {
 private:
     Node* head;
@@ -71,7 +71,7 @@ public:
     }
 };
 
-// Main
+
 int main() {
     ImageGallery gallery;
 

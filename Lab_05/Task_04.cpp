@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// Node
+
 class Node {
 public:
     string song;
@@ -11,7 +11,7 @@ public:
     Node(const string& songName) : song(songName), next(NULL) {}
 };
 
-// Playlist
+
 class Playlist {
 private:
     Node* tail;
@@ -67,7 +67,7 @@ public:
     }
 };
 
-// Main
+
 int main() {
     Playlist playlist;
 

@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// Node
+
 class Node {
 public:
     string name;
@@ -11,7 +11,7 @@ public:
     Node(const string& playerName) : name(playerName), next(NULL) {}
 };
 
-// Game Turns
+
 class GameTurns {
 private:
     Node* tail;
@@ -60,7 +60,7 @@ public:
     }
 };
 
-// Main
+
 int main() {
     GameTurns game;
 
