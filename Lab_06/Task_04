@@ -1,0 +1,92 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Node {
+public:
+    string orderId;
+    Node* next;
+
+    Node(const string& id) : orderId(id), next(NULL) {}
+};
+
+class OrderStack {
+private:
+    Node* top;
+
+public:
+    OrderStack() : top(NULL) {}
+
+    ~OrderStack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    bool isEmpty() const {
+        return top == NULL;
+    }
+
+    void push(const string& id) {
+        Node* newNode = new Node(id);
+        newNode->next = top;
+        top = newNode;
+    }
+
+    string pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow: no orders to process" << endl;
+            return "";
+        }
+        Node* temp = top;
+        string id = temp->orderId;
+        top = top->next;
+        delete temp;
+        return id;
+    }
+
+    string peek() const {
+        if (isEmpty()) return "";
+        return top->orderId;
+    }
+
+    void display() const {
+        if (isEmpty()) {
+            cout << "No pending orders" << endl;
+            return;
+        }
+        Node* current = top;
+        while (current != NULL) {
+            cout << current->orderId;
+            if (current == top) cout << "  <-- TOP";
+            cout << endl;
+            current = current->next;
+        }
+    }
+};
+
+int main() {
+    OrderStack orders;
+
+    orders.push("ORD-101");
+    orders.push("ORD-102");
+    orders.push("ORD-103");
+    orders.push("ORD-104");
+
+    cout << "Orders (top to bottom):" << endl;
+    orders.display();
+
+    string first = orders.pop();
+    cout << "\nProcessed order 1: " << first << endl;
+    string second = orders.pop();
+    cout << "Processed order 2: " << second << endl;
+
+    cout << "\nCurrent TOP order: " << orders.peek() << endl;
+
+    cout << "\nRemaining orders:" << endl;
+    orders.display();
+
+    cout << "\nIs the stack empty? " << (orders.isEmpty() ? "Yes" : "No") << endl;
+
+    return 0;
+}

@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class BrowserHistory {
+private:
+    string* pages;
+    int top;
+    int capacity;
+
+public:
+    BrowserHistory(int size = 10) {
+        capacity = size;
+        pages = new string[capacity];
+        top = -1;
+    }
+
+    ~BrowserHistory() {
+        delete[] pages;
+    }
+
+    bool isEmpty() const {
+        return top == -1;
+    }
+
+    bool isFull() const {
+        return top == capacity - 1;
+    }
+
+    void push(const string& page) {
+        if (isFull()) {
+            cout << "Stack overflow: cannot visit " << page << endl;
+            return;
+        }
+        pages[++top] = page;
+    }
+
+    string pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow: no pages to go back to" << endl;
+            return "";
+        }
+        return pages[top--];
+    }
+
+    string peek() const {
+        if (isEmpty()) return "";
+        return pages[top];
+    }
+
+    void display() const {
+        if (isEmpty()) {
+            cout << "History is empty" << endl;
+            return;
+        }
+        for (int i = top; i >= 0; i--) {
+            cout << pages[i];
+            if (i == top) cout << "  <-- TOP";
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    BrowserHistory browser;
+
+    
+    browser.push("Google");
+    browser.push("YouTube");
+    browser.push("Facebook");
+    browser.push("GitHub");
+
+    
+    cout << "Browsing history (top to bottom):" << endl;
+    browser.display();
+
+    
+    string removed = browser.pop();
+    cout << "\nBack pressed. Removed page: " << removed << endl;
+
+    
+    cout << "Current page (TOP): " << browser.peek() << endl;
+
+    
+    cout << "\nRemaining history:" << endl;
+    browser.display();
+
+    return 0;
+}

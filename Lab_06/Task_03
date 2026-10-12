@@ -1,0 +1,88 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Node {
+public:
+    string requestId;
+    Node* next;
+
+    Node(const string& id) : requestId(id), next(NULL) {}
+};
+
+class EmergencyStack {
+private:
+    Node* top;
+
+public:
+    EmergencyStack() : top(NULL) {}
+
+    ~EmergencyStack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+
+    bool isEmpty() const {
+        return top == NULL;
+    }
+
+    void push(const string& id) {
+        Node* newNode = new Node(id);
+        newNode->next = top;
+        top = newNode;
+    }
+
+    string pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow: no requests to handle" << endl;
+            return "";
+        }
+        Node* temp = top;
+        string id = temp->requestId;
+        top = top->next;
+        delete temp;
+        return id;
+    }
+
+    string peek() const {
+        if (isEmpty()) return "";
+        return top->requestId;
+    }
+
+    void display() const {
+        if (isEmpty()) {
+            cout << "No pending requests" << endl;
+            return;
+        }
+        Node* current = top;
+        while (current != NULL) {
+            cout << current->requestId;
+            if (current == top) cout << "  <-- TOP";
+            cout << endl;
+            current = current->next;
+        }
+    }
+};
+
+int main() {
+    EmergencyStack requests;
+
+    requests.push("P101");
+    requests.push("P102");
+    requests.push("P103");
+    requests.push("P104");
+
+    cout << "Pending requests (top to bottom):" << endl;
+    requests.display();
+
+    string handled = requests.pop();
+    cout << "\nHandled request: " << handled << endl;
+
+    cout << "New TOP request: " << requests.peek() << endl;
+
+    cout << "\nRemaining requests:" << endl;
+    requests.display();
+
+    return 0;
+}

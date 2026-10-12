@@ -1,0 +1,91 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class UndoManager {
+private:
+    string* actions;
+    int top;
+    int capacity;
+
+public:
+    UndoManager(int size = 10) {
+        capacity = size;
+        actions = new string[capacity];
+        top = -1;
+    }
+
+    ~UndoManager() {
+        delete[] actions;
+    }
+
+    bool isEmpty() const {
+        return top == -1;
+    }
+
+    bool isFull() const {
+        return top == capacity - 1;
+    }
+
+    void push(const string& action) {
+        if (isFull()) {
+            cout << "Stack overflow: cannot record " << action << endl;
+            return;
+        }
+        actions[++top] = action;
+    }
+
+    string pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow: nothing to undo" << endl;
+            return "";
+        }
+        return actions[top--];
+    }
+
+    string peek() const {
+        if (isEmpty()) return "";
+        return actions[top];
+    }
+
+    void display() const {
+        if (isEmpty()) {
+            cout << "No actions recorded" << endl;
+            return;
+        }
+        for (int i = top; i >= 0; i--) {
+            cout << actions[i];
+            if (i == top) cout << "  <-- TOP";
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    UndoManager editor;
+
+    
+    editor.push("Type \"Hello\"");
+    editor.push("Type \"World\"");
+    editor.push("Add \"!\"");
+    editor.push("Delete \"!\"");
+
+    
+    cout << "Actions (top to bottom):" << endl;
+    editor.display();
+
+    
+    string first = editor.pop();
+    cout << "\nUndo 1: reversed " << first << endl;
+    string second = editor.pop();
+    cout << "Undo 2: reversed " << second << endl;
+
+    
+    cout << "\nCurrent TOP action: " << editor.peek() << endl;
+
+    
+    cout << "\nRemaining actions:" << endl;
+    editor.display();
+
+    return 0;
+}
